@@ -104,17 +104,19 @@
                             <v-file-input  
                                 id="file"
                                 @change="handleFileUpload"
-                                ></v-file-input>
+                            >
+                            </v-file-input>
 
                             <v-btn 
                                 width="100%" 
                                 :loading="loadingContent"
-                                @click="update"
+                                @click="updateProfile"
                                 class="my-3 white--text"
                                 color="#3888D7"
                             >
                                 Update Profile
                             </v-btn>
+
                         </v-form>
                     </v-card-text>
                 </v-card>
@@ -160,7 +162,7 @@ export default {
             console.log(this.file)
         },
 
-        async update() {
+        async updateProfile() {
 
             this.loadingContent = true;
 
@@ -185,9 +187,6 @@ export default {
                 this.loadingContent = false
                 this.snackbar = true
                 this.dialog = false
-
-                // Update the webpage with the current profile details
-                this.fetchUserProfile()
             }
             catch(err) {
                 console.log(err)
@@ -198,33 +197,32 @@ export default {
             }
 
         },
-        fetchUserProfile() {
-            ProfileDataService.show()
-            .then((res) => {
-                //console.log(res.data)
-                // get only the user's profile
-                this.userProfile = res.data.filter((val) => {
-                    return val.username === this.user.userDetails.username
-                })
-                this.firstName = this.userProfile[0].firstName
-                this.username = this.userProfile[0].username
-                this.lastName = this.userProfile[0].lastName
-                this.email = this.userProfile[0].email
-                this.occupation = this.userProfile[0].occupation
-                this.location = this.userProfile[0].firstName
-                this.imageSrc = this.userProfile[0].profilePicture
-                console.log(this.userProfile)
-                console.log(this.userProfile[0].username)
-            })
-            .catch((err) => {
-                this.error = "There was an error getting your profile details. Try refreshing the page"
-                console.log(err)
-            })
-        }
+            
     },
 
     mounted() {
-        this.fetchUserProfile()
+        ProfileDataService.show()
+        .then((res) => {
+            //console.log(res.data)
+            // get only the user's profile
+            this.userProfile = res.data.filter((val) => {
+                return val.username === this.user.userDetails.username
+            })
+            this.firstName = this.userProfile[0].firstName
+            this.username = this.userProfile[0].username
+            this.lastName = this.userProfile[0].lastName
+            this.email = this.userProfile[0].email
+            this.occupation = this.userProfile[0].occupation
+            this.location = this.userProfile[0].firstName
+            this.imageSrc = this.userProfile[0].profilePicture
+            console.log(this.userProfile)
+            console.log(this.userProfile[0].username)
+        })
+        .catch((err) => {
+            this.error = "There was an error getting your profile details. Try refreshing the page"
+            console.log(err)
+        })
     }
+    
 }
 </script>

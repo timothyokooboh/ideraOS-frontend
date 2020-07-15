@@ -26,7 +26,7 @@ Vue.use(VueRouter)
     name: 'Dashboard',
     component: () => import('../views/Dashboard.vue'),
     beforeEnter(to, from, next) {
-      if(!store.state.userToken || !store.state.isAuth) {
+      if(!store.state.userToken) {
         next("/login")
       } else {
         next()
